@@ -29,6 +29,7 @@ export default function Chat() {
 		}
 	};
 
+	// THIS READS MESSAGES FROM DATABASE?
 	// Execute onValue inside the useEffect
 	useEffect(() => {
 		const itemsRef = ref(database, "messages/");

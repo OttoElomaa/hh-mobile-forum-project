@@ -8,9 +8,11 @@ export default function App() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<View>
+				<StatusBar style="auto" />
 				<View style={{ height: 20 }} />
 				<Text style={styles.myHeader}>This is the message sending app!</Text>
-				<StatusBar style="auto" />
+				<View style={{ height: 20 }} />
+
 				<Chat />
 				<View style={{ height: 20 }} />
 			</View>
