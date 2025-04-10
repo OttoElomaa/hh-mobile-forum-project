@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Chat from "./components/chat";
 import styles from "./styles/Styles";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SignupEmailComp from "./components/SignupEmailComp";
 
 export default function App() {
 	return (
@@ -11,6 +12,8 @@ export default function App() {
 				<StatusBar style="auto" />
 				<View style={{ height: 20 }} />
 				<Text style={styles.myHeader}>This is the message sending app!</Text>
+        <SignupEmailComp/>
+
 				<View style={{ height: 20 }} />
 
 				<Chat />
