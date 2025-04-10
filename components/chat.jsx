@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Alert, Button, FlatList, Text, TextInput, View } from "react-native";
 
+import dayjs from "dayjs";
+
 import { app } from "../firebaseConfig.js";
 import { getDatabase, ref, push, onValue } from "firebase/database";
 
 import styles from "../styles/Styles";
-import MyGenericButton from "./MyGenericButton"
-
+import MyGenericButton from "./MyGenericButton";
 
 export default function Chat() {
 	// CONST DEFINITIONS
@@ -16,6 +17,7 @@ export default function Chat() {
 	const [message, setMessage] = useState({
 		title: "",
 		mText: "",
+		date: dayjs,
 	});
 
 	//SAVE -> PUSH MESSAGE TO FIREBASE
@@ -47,7 +49,10 @@ export default function Chat() {
 				renderItem={({ item }) => (
 					<>
 						<View style={styles.listItem}>
-							<Text style={{ fontSize: 18 }}>{item.title}</Text>
+							<Text style={{ fontSize: 18 }}>
+								{" "}
+								{item.title} {dayjs(item.date).format("DD.MM HH:mm")}
+							</Text>
 							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
 						</View>
 						<View style={{ height: 10 }} />
@@ -57,19 +62,26 @@ export default function Chat() {
 			/>
 
 			{/*Here user types message*/}
-			<TextInput
+
+			{/* 			<TextInput
 				placeholder="Title"
 				onChangeText={(text) => setMessage({ ...message, title: text })}
 				value={message.title}
-			/>
+			/> */}
 			<TextInput
 				placeholder="Message Text"
-				onChangeText={(text) => setMessage({ ...message, mText: text })}
+				onChangeText={(text) =>
+					setMessage({
+						...message,
+						mText: text,
+						title: "re: conversation",
+						date: dayjs().toJSON(),
+					})
+				}
 				value={message.mText}
 			/>
 
 			<MyGenericButton function={handleSave} text="Send" />
-			
 		</>
 	);
 }
