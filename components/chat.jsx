@@ -1,8 +1,12 @@
-import { app } from "../firebaseConfig.js";
-import { getDatabase, ref, push, onValue } from "firebase/database";
-import styles from "../styles/Styles";
 import { useEffect, useState } from "react";
 import { Alert, Button, FlatList, Text, TextInput, View } from "react-native";
+
+import { app } from "../firebaseConfig.js";
+import { getDatabase, ref, push, onValue } from "firebase/database";
+
+import styles from "../styles/Styles";
+import MyGenericButton from "./MyGenericButton"
+
 
 export default function Chat() {
 	// CONST DEFINITIONS
@@ -38,33 +42,34 @@ export default function Chat() {
 
 	return (
 		<>
-			<View style={styles.container}>
-				<TextInput
-					placeholder="Title"
-					onChangeText={(text) => setMessage({ ...message, title: text })}
-					value={message.title}
-				/>
-				<TextInput
-					placeholder="Message Text"
-					onChangeText={(text) => setMessage({ ...message, mText: text })}
-					value={message.mText}
-				/>
-				<Button onPress={handleSave} title="Save" />
-
-				<FlatList
-					renderItem={({ item }) => (
+			{/*List showing each message in chat*/}
+			<FlatList
+				renderItem={({ item }) => (
+					<>
 						<View style={styles.listItem}>
-							<Text style={{ fontSize: 18 }}>
-								{item.title}
-							</Text>
-							<Text style={{ fontSize: 18 }}>
-								{item.mText}
-							</Text>
+							<Text style={{ fontSize: 18 }}>{item.title}</Text>
+							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
 						</View>
-					)}
-					data={messages}
-				/>
-			</View>
+						<View style={{ height: 10 }} />
+					</>
+				)}
+				data={messages}
+			/>
+
+			{/*Here user types message*/}
+			<TextInput
+				placeholder="Title"
+				onChangeText={(text) => setMessage({ ...message, title: text })}
+				value={message.title}
+			/>
+			<TextInput
+				placeholder="Message Text"
+				onChangeText={(text) => setMessage({ ...message, mText: text })}
+				value={message.mText}
+			/>
+
+			<MyGenericButton function={handleSave} text="Send" />
+			
 		</>
 	);
 }
