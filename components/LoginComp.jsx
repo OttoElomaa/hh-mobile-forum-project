@@ -9,32 +9,31 @@ import {
 	View,
 } from "react-native";
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import styles from "../styles/Styles";
 import modalStyles from "../styles/modalStyles.js";
 import MyGenericButton from "./MyGenericButton";
 
-export default function SignupEmailComp(props) {
+export default function LoginComp(props) {
 	const auth = getAuth();
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const signupWithEmail = (email, password) => {
-		createUserWithEmailAndPassword(auth, email, password)
+	const loginEmail = (email, password) => {
+		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
-				// Signed up
-				console.log(userCredential);
+				// Signed in
 				const user = userCredential.user;
 				// SET USER BACK IN APP - YEAH BIT DUMB BUT IT WORKS
-				props.setUser(user);
-				// ...
+				props.setUser(user)
+				
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
-				// ..
+				Alert.alert("Login error! " + error.message);
 			});
 	};
 
@@ -42,7 +41,8 @@ export default function SignupEmailComp(props) {
 	const showModal = () => setModalVisible(true);
 	const hideModal = () => {
 		setModalVisible(false);
-		signupWithEmail(email, password);
+		loginEmail(email, password);
+		
 	};
 
 	return (
@@ -57,7 +57,7 @@ export default function SignupEmailComp(props) {
 				}}
 			>
 				<View style={styles.container}>
-					<Text>Give info to create account</Text>
+					<Text>Give account info to login</Text>
 
 					<TextInput
 						placeholder="Type email"
@@ -70,11 +70,11 @@ export default function SignupEmailComp(props) {
 						value={password}
 					/>
 
-					<MyGenericButton function={hideModal} text="Send Signup Request" />
+					<MyGenericButton function={hideModal} text="Log me in" />
 				</View>
 			</Modal>
 
-			<MyGenericButton function={showModal} text="Sign up" />
+			<MyGenericButton function={showModal} text="Login" />
 		</>
 	);
 }
