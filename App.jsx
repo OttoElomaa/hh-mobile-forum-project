@@ -11,7 +11,7 @@ import SignupEmailComp from "./components/SignupEmailComp";
 import LoginComp from "./components/LoginComp";
 import SignOutComp from "./components/SignOutComp";
 
-import AuthListener from "./auth/authStateListener";
+//import AuthListener from "./auth/authStateListener";
 import { useEffect, useState } from "react";
 
 export default function App() {

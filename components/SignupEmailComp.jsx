@@ -15,11 +15,15 @@ import styles from "../styles/Styles";
 import modalStyles from "../styles/modalStyles.js";
 import MyGenericButton from "./MyGenericButton";
 
+import { updateUserProfile } from "../scripts/profileScript.js";
+
 export default function SignupEmailComp(props) {
 	const auth = getAuth();
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
+	const [displayName, setDisplayName] = useState("");
 
 	const signupWithEmail = (email, password) => {
 		createUserWithEmailAndPassword(auth, email, password)
@@ -27,6 +31,8 @@ export default function SignupEmailComp(props) {
 				// Signed up
 				console.log(userCredential);
 				const user = userCredential.user;
+				updateUserProfile(user, displayName);
+
 				// SET USER BACK IN APP - YEAH BIT DUMB BUT IT WORKS
 				props.setUser(user);
 				// ...
@@ -34,6 +40,8 @@ export default function SignupEmailComp(props) {
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
+				console.log(errorMessage)
+				Alert.alert(errorCode, errorMessage)
 				// ..
 			});
 	};
@@ -68,6 +76,12 @@ export default function SignupEmailComp(props) {
 						placeholder="Type password"
 						onChangeText={(text) => setPassword(text)}
 						value={password}
+					/>
+
+					<TextInput
+						placeholder="Type display name"
+						onChangeText={(text) => setDisplayName(text)}
+						value={displayName}
 					/>
 
 					<MyGenericButton function={hideModal} text="Send Signup Request" />

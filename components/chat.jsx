@@ -64,11 +64,6 @@ export default function Chat() {
 
 			{/*Here user types message*/}
 
-			{/* 			<TextInput
-				placeholder="Title"
-				onChangeText={(text) => setMessage({ ...message, title: text })}
-				value={message.title}
-			/> */}
 			<TextInput
 				placeholder="Message Text"
 				onChangeText={(text) =>
