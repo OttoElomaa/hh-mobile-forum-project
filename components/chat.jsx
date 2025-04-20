@@ -9,12 +9,14 @@ import { getDatabase, ref, push, onValue } from "firebase/database";
 import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
 
-export default function Chat() {
+export default function Chat(props) {
 	// CONST DEFINITIONS
 	const database = getDatabase(app);
 	const [messages, setMessages] = useState([]);
 
 	const [message, setMessage] = useState({
+		userId:"",
+		userName:"",
 		title: "",
 		mText: "",
 		date: dayjs,

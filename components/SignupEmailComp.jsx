@@ -34,7 +34,7 @@ export default function SignupEmailComp(props) {
 				updateUserProfile(user, displayName);
 
 				// SET USER BACK IN APP - YEAH BIT DUMB BUT IT WORKS
-				props.setUser(user);
+				props.setUser(user.uid);
 				// ...
 			})
 			.catch((error) => {
