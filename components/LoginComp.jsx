@@ -56,7 +56,7 @@ export default function LoginComp(props) {
 					setModalVisible(!modalVisible);
 				}}
 			>
-				<View style={styles.container}>
+				<View style={styles.spaceEvenly}>
 					<Text>Give account info to login</Text>
 
 					<TextInput
@@ -72,6 +72,7 @@ export default function LoginComp(props) {
 
 					<MyGenericButton function={hideModal} text="Log me in" />
 				</View>
+				<View style={styles.spaceEvenly}/>
 			</Modal>
 
 			<MyGenericButton function={showModal} text="Login" />

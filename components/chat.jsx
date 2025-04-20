@@ -15,11 +15,11 @@ export default function Chat(props) {
 	const [messages, setMessages] = useState([]);
 
 	const [message, setMessage] = useState({
+		mText: "",
+		date: dayjs,
 		userId:"",
 		userName:"",
 		title: "",
-		mText: "",
-		date: dayjs,
 	});
 
 	//SAVE -> PUSH MESSAGE TO FIREBASE
@@ -54,7 +54,7 @@ export default function Chat(props) {
 						<View style={styles.listItem}>
 							<Text style={{ fontSize: 18 }}>
 								{" "}
-								{item.title} {dayjs(item.date).format("DD.MM HH:mm")}
+								{item.userName} {dayjs(item.date).format("DD.MM HH:mm")}
 							</Text>
 							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
 						</View>
@@ -73,6 +73,7 @@ export default function Chat(props) {
 						...message,
 						mText: text,
 						title: "re: conversation",
+						userName: props.user.displayName,
 						date: dayjs().toJSON(),
 					})
 				}

@@ -14,6 +14,7 @@ import SignOutComp from "./components/SignOutComp";
 //import AuthListener from "./auth/authStateListener";
 import { useEffect, useState } from "react";
 import { get, getDatabase, ref } from "firebase/database";
+import { Appbar } from "react-native-paper";
 
 export default function App() {
 	const auth = getAuth();
@@ -40,9 +41,8 @@ export default function App() {
 				setUser(null); // No profile found
 			}
 			setErrorStr(null);
-
 		} catch (err) {
-			Alert.alert("Fetch profile error", err.message)
+			Alert.alert("Fetch profile error", err.message);
 			setErrorStr("Failed to load profile");
 			setUser(null);
 		} finally {
@@ -51,35 +51,38 @@ export default function App() {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			
-			{user && (
-				<View>
-					<StatusBar style="auto" />
-					<View style={{ height: 20 }} />
+		<>
+			<SafeAreaView style={styles.container}>
+				<StatusBar style="auto" />
+				<Appbar>
 					<Text style={styles.myHeader}>This is the message sending app!</Text>
-					<Text>Welcome {user.displayName}</Text>
-					<SignOutComp setUser={setUser} />
+				</Appbar>
 
-					<View style={{ height: 20 }} />
+				<View>{user && <Text>Welcome {user.displayName}</Text>}</View>
 
-					<Chat />
-					<View style={{ height: 20 }} />
-				</View>
-			)}
+				{/* LOGGED IN VIEW */}
+				{user && (
+					<View style={styles.spaceEvenly}>
+						<SignOutComp setUser={setUser} />
+						<Chat user={user} />
+					</View>
+				)}
 
-			{!user && (
-				<View>
-					<StatusBar style="auto" />
-					<View style={{ height: 20 }} />
-					<Text style={styles.myHeader}>This is the message sending app!</Text>
-					<SignupEmailComp setUser={fetchUserProfile} />
-					<View style={{ height: 20 }} />
-					<LoginComp setUser={fetchUserProfile} />
+				{/* LOGGED OUT VIEW */}
+				{!user && (
+					<>
+						<View style={styles.spaceEvenly}>
+							<View style={{ height: 20 }} />
+							<SignupEmailComp setUser={fetchUserProfile} />
+							<View style={{ height: 20 }} />
+							<LoginComp setUser={fetchUserProfile} />
 
-					<View style={{ height: 20 }} />
-				</View>
-			)}
-		</SafeAreaView>
+							<View style={{ height: 20 }} />
+						</View>
+						<View style={styles.spaceEvenly} />
+					</>
+				)}
+			</SafeAreaView>
+		</>
 	);
 }
