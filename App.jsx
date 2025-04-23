@@ -4,6 +4,11 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import {
+	createStaticNavigation,
+	NavigationContainer,
+} from "@react-navigation/native";
+
 import styles from "./styles/Styles";
 
 import Chat from "./components/chat";
@@ -12,9 +17,16 @@ import LoginComp from "./components/LoginComp";
 import SignOutComp from "./components/SignOutComp";
 
 //import AuthListener from "./auth/authStateListener";
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { get, getDatabase, ref } from "firebase/database";
 import { Appbar } from "react-native-paper";
+import ProfileScreen from "./components/ProfileScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+export const UserContext = createContext({
+	user: null,
+	setUser: () => {}, // Add setUser to context
+});
 
 export default function App() {
 	const auth = getAuth();
@@ -50,40 +62,47 @@ export default function App() {
 		}
 	};
 
+	const MyTabs = createBottomTabNavigator({
+		screens: {
+			Chat: {
+				screen: Chat,
+			},
+			Profile: {
+				screen: ProfileScreen,
+			},
+		},
+	});
+
+	const Navigation = createStaticNavigation(MyTabs);
+
+	const userContextValues = {
+		user,
+		setUser
+	};
+
 	return (
 		<>
-			<SafeAreaView style={styles.container}>
-				<StatusBar style="auto" />
-				<Appbar>
-					<View style={[styles.spaceEvenly]}>
-						<Text style={styles.myHeader}>Message App</Text>{" "}
-						<View>{user && <Text>Welcome {user.displayName}</Text>}</View>
+			<StatusBar style="auto" />
+
+			{/* LOGGED IN VIEW */}
+			<UserContext.Provider value={userContextValues}>
+				{user && <Navigation />}
+			</UserContext.Provider>
+
+			{/* LOGGED OUT VIEW */}
+			{!user && (
+				<SafeAreaView style={styles.container}>
+					<View style={styles.spaceEvenly}>
+						<View style={{ height: 20 }} />
+						<SignupEmailComp setUser={fetchUserProfile} />
+						<View style={{ height: 20 }} />
+						<LoginComp setUser={fetchUserProfile} />
+
+						<View style={{ height: 20 }} />
 					</View>
-				</Appbar>
-
-				{/* LOGGED IN VIEW */}
-				{user && (
-					<View style={[styles.spaceEvenly]}>
-						<SignOutComp setUser={setUser} />
-						<Chat user={user} />
-					</View>
-				)}
-
-				{/* LOGGED OUT VIEW */}
-				{!user && (
-					<>
-						<View style={styles.spaceEvenly}>
-							<View style={{ height: 20 }} />
-							<SignupEmailComp setUser={fetchUserProfile} />
-							<View style={{ height: 20 }} />
-							<LoginComp setUser={fetchUserProfile} />
-
-							<View style={{ height: 20 }} />
-						</View>
-						<View style={styles.spaceEvenly} />
-					</>
-				)}
-			</SafeAreaView>
+					<View style={styles.spaceEvenly} />
+				</SafeAreaView>
+			)}
 		</>
 	);
 }

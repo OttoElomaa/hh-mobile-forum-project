@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Button, FlatList, Text, TextInput, View } from "react-native";
 
 import dayjs from "dayjs";
@@ -6,19 +6,29 @@ import dayjs from "dayjs";
 import { app } from "../firebaseConfig.js";
 import { getDatabase, ref, push, onValue } from "firebase/database";
 
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Appbar } from "react-native-paper";
+
 import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
+import { UserContext } from '../App.jsx'; 
 
-export default function Chat(props) {
+
+
+export default function Chat() {
 	// CONST DEFINITIONS
 	const database = getDatabase(app);
+	const navigation = useNavigation();
+
 	const [messages, setMessages] = useState([]);
+	const {user, setUser} = useContext(UserContext);
 
 	const [message, setMessage] = useState({
 		mText: "",
 		date: dayjs,
-		userId:"",
-		userName:"",
+		userId: "",
+		userName: "",
 		title: "",
 	});
 
@@ -46,7 +56,13 @@ export default function Chat(props) {
 	}, []);
 
 	return (
-		<>
+		<SafeAreaView style={styles.container}>
+			<Appbar>
+				<View style={[styles.spaceEvenly]}>
+					<Text style={styles.myHeader}>Message App</Text>{" "}
+					<View>{user != undefined && <Text>Welcome {user.displayName}</Text>}</View>
+				</View>
+			</Appbar>
 			{/*List showing each message in chat*/}
 			<FlatList
 				renderItem={({ item }) => (
@@ -73,7 +89,7 @@ export default function Chat(props) {
 						...message,
 						mText: text,
 						title: "re: conversation",
-						userName: props.user.displayName,
+						userName: user.displayName,
 						date: dayjs().toJSON(),
 					})
 				}
@@ -81,6 +97,6 @@ export default function Chat(props) {
 			/>
 
 			<MyGenericButton function={handleSave} text="Send" />
-		</>
+		</SafeAreaView>
 	);
 }
