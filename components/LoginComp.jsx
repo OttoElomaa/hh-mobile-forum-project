@@ -28,7 +28,7 @@ export default function LoginComp(props) {
 				const user = userCredential.user;
 				// SET USER BACK IN APP - YEAH BIT DUMB BUT IT WORKS
 				props.setUser(user.uid)
-				
+
 			})
 			.catch((error) => {
 				const errorCode = error.code;

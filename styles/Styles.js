@@ -4,14 +4,18 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "white",
-		alignItems: "center",
+		width: "90%",
 
-		// Column is default
-		flexDirection: "column",
+		margin:"auto",
+		marginBottom: 20,
+
+		alignItems: "center",
+		flexDirection: "column", // Column is default
+		backgroundColor: "white",
 	},
 	spaceEvenly: {
 		flex: 1,
+		width: "100%",
 		justifyContent: "space-evenly",
 	},
 	row: {
@@ -55,11 +59,13 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	listItem: {
-		borderRadius: 25,
-		paddingVertical: 10,
-		paddingHorizontal: 20,
 		justifyContent: "center",
 		alignItems: "center",
+
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+
+		borderRadius: 25, // CORNERS PRETTIER
 		backgroundColor: "#f0f0f0",
 	},
 

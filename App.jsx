@@ -55,14 +55,15 @@ export default function App() {
 			<SafeAreaView style={styles.container}>
 				<StatusBar style="auto" />
 				<Appbar>
-					<Text style={styles.myHeader}>This is the message sending app!</Text>
+					<View style={[styles.spaceEvenly]}>
+						<Text style={styles.myHeader}>Message App</Text>{" "}
+						<View>{user && <Text>Welcome {user.displayName}</Text>}</View>
+					</View>
 				</Appbar>
-
-				<View>{user && <Text>Welcome {user.displayName}</Text>}</View>
 
 				{/* LOGGED IN VIEW */}
 				{user && (
-					<View style={styles.spaceEvenly}>
+					<View style={[styles.spaceEvenly]}>
 						<SignOutComp setUser={setUser} />
 						<Chat user={user} />
 					</View>
