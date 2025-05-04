@@ -25,10 +25,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 import ChatListComp from "./ChatsListComp.jsx";
 
-export default function Chat() {
+export default function Chat( { route } ) {
 	// CONST DEFINITIONS
 	const database = getDatabase(app);
 	const navigation = useNavigation();
+
+	const chatId = route.params;
 
 	const [messages, setMessages] = useState([]);
 	const { user, setUser } = useContext(UserContext);
@@ -88,6 +90,12 @@ export default function Chat() {
 				</View>
 			</Appbar>
 
+
+{/*Start of conditional: Is there a chatId provided?*/}
+			{chatId && (
+				<>
+					
+
 			{/*List showing each message in chat*/}
 			<FlatList
 				style={styles.myList}
@@ -105,6 +113,7 @@ export default function Chat() {
 						</View>
 						<View style={{ height: 10 }} />
 					</>
+					
 				)}
 				data={messages}
 			/>
@@ -127,6 +136,9 @@ export default function Chat() {
 			/>
 
 			<MyGenericButton function={handleSave} text="Send" />
+			</>
+		)}
+		{/*End of conditional*/}
 		</>
 	);
 }
