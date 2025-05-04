@@ -78,7 +78,7 @@ export default function Chat() {
 						styles.margin1,
 						{ backgroundColor: pressed ? "darkred" : "orange" },
 					]}
-					onPress={onPressFunction}
+					onPress={() => navigation.navigate('ChatList')}
 				>
 					<Ionicons name="arrow-back" size={20} color="black" />
 					<Text>Back to Chats</Text>

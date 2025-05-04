@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import styles from "../styles/Styles";
 import { UserContext } from '../App.jsx'; 
+import { Text, View } from "react-native";
 
 
 export default function ProfileScreen() {
@@ -12,8 +13,13 @@ export default function ProfileScreen() {
 	const {user, setUser} = useContext(UserContext);
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<>
+		<View style={styles.spaceEvenly}>
+		<Text>User: {user.displayName}</Text>
+
 			<SignOutComp setUser={setUser} />
-		</SafeAreaView>
+			</View>
+			<View style={{height:80}}/>
+		</>
 	);
 }

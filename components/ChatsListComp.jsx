@@ -1,5 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import { Alert, Button, FlatList, Text, TextInput, View } from "react-native";
+import { useContext, useEffect, useState, useId } from "react";
+import {  } from 'react';
+import {
+	Alert,
+	Button,
+	FlatList,
+	Pressable,
+	Text,
+	TextInput,
+	View,
+} from "react-native";
 
 import dayjs from "dayjs";
 
@@ -13,6 +22,7 @@ import { Appbar } from "react-native-paper";
 import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
 import { UserContext } from "../App.jsx";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function Chat() {
 	// CONST DEFINITIONS
@@ -21,6 +31,7 @@ export default function Chat() {
 	const { user, setUser } = useContext(UserContext);
 
 	const [newChat, setNewChat] = useState({
+		chatId: useId(),
 		chatTitle: "",
 		date: dayjs,
 		userId: "",
@@ -64,15 +75,23 @@ export default function Chat() {
 				style={styles.myList}
 				renderItem={({ item }) => (
 					<>
-						<View style={styles.listItem}>
-							<View style={styles.row}>
-								<Text style={styles.listItemTitle}>{item.chatTitle}</Text>
-								<Text style={{ fontSize: 15 }}>
-									{dayjs(item.date).format("DD.MM HH:mm")}
-								</Text>
+						<Pressable onPress={() => navigation.navigate('Chat', {chatId: {item}})}>
+							<View style={styles.listItem}>
+								<View style={styles.row}>
+									<Text style={styles.listItemTitle}>{item.chatTitle}</Text>
+									<Text style={{ fontSize: 15 }}>
+										{dayjs(item.date).format("DD.MM HH:mm")}
+									</Text>
+									<Ionicons
+										name="arrow-forward"
+										size={20}
+										color="black"
+										style={{ marginLeft: 30 }}
+									/>
+								</View>
+								<Text style={{ fontSize: 18 }}>Started by {item.userName}</Text>
 							</View>
-							<Text style={{ fontSize: 18 }}>Started by {item.userName}</Text>
-						</View>
+						</Pressable>
 						<View style={{ height: 10 }} />
 					</>
 				)}
