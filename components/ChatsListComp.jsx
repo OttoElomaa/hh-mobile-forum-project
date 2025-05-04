@@ -78,7 +78,7 @@ export default function Chat() {
 			/>
 
 			<TextInput
-				placeholder="Chat Name"
+				placeholder="New Chat Name"
 				onChangeText={(text) =>
 					setNewChat({
 						...newChat,
@@ -91,7 +91,7 @@ export default function Chat() {
 				value={newChat.chatTitle}
 			/>
 
-			<MyGenericButton function={handleSave} text="Send" />
+			<MyGenericButton function={handleSave} text="Create New Chat" />
 		</>
 	);
 }

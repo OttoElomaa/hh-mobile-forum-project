@@ -1,5 +1,15 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createContext, useContext, useEffect, useState } from "react";
+import { get, getDatabase, ref } from "firebase/database";
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	initializeAuth,
+	getReactNativePersistence,
+} from "firebase/auth";
+
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import {auth, database} from "./firebaseConfig"
 
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,12 +26,10 @@ import SignupEmailComp from "./components/SignupEmailComp";
 import LoginComp from "./components/LoginComp";
 import SignOutComp from "./components/SignOutComp";
 import ChatListComp from "./components/ChatsListComp";
-
-//import AuthListener from "./auth/authStateListener";
-import { createContext, useContext, useEffect, useState } from "react";
-import { get, getDatabase, ref } from "firebase/database";
-import { Appbar } from "react-native-paper";
 import ProfileScreen from "./components/ProfileScreen";
+
+import { Appbar } from "react-native-paper";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -31,8 +39,8 @@ export const UserContext = createContext({
 });
 
 export default function App() {
-	const auth = getAuth();
-	const database = getDatabase();
+
+
 
 	const [user, setUser] = useState(null);
 
@@ -74,7 +82,7 @@ export default function App() {
 				if (route.name === "Chat") {
 					iconName = "chatbubble";
 				} else if (route.name === "ChatList") {
-					iconName = "chatbubble";
+					iconName = "chatbubbles";
 				} else if (route.name === "Profile") {
 					iconName = "person";
 				}
@@ -84,14 +92,14 @@ export default function App() {
 		}),
 
 		screens: {
+			ChatList: {
+				screen: ChatListComp,
+			},
 			Chat: {
 				screen: Chat,
 			},
 			Profile: {
 				screen: ProfileScreen,
-			},
-			ChatList: {
-				screen: ChatListComp,
 			},
 		},
 	});

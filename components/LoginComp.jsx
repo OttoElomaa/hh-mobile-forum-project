@@ -9,8 +9,9 @@ import {
 	View,
 } from "react-native";
 
+import {auth} from "../firebaseConfig"
+
 import {
-	getAuth,
 	signInWithEmailAndPassword,
 	setPersistence,
 	browserSessionPersistence,
@@ -24,7 +25,7 @@ import modalStyles from "../styles/modalStyles.js";
 import MyGenericButton from "./MyGenericButton";
 
 export default function LoginComp(props) {
-	const auth = getAuth();
+	//const auth = getAuth();
 	// PERSISTENCE FIX: franjuju and Mark Peschel. Firebase V9 - "INTERNAL ASSERTION FAILED: Expected a class definition" on React Native app. Stack Overflow. 
 	// Link: https://stackoverflow.com/questions/76748402/firebase-v9-internal-assertion-failed-expected-a-class-definition-on-react
 	const localPersistence = getReactNativePersistence(ReactNativeAsyncStorage);

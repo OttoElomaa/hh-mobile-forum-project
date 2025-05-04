@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Alert, Button, FlatList, Text, TextInput, View } from "react-native";
+import { Alert, Button, FlatList, Pressable, Text, TextInput, View } from "react-native";
 
 import dayjs from "dayjs";
 
@@ -13,6 +13,7 @@ import { Appbar } from "react-native-paper";
 import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
 import { UserContext } from "../App.jsx";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import ChatListComp from "./ChatsListComp.jsx";
 
@@ -58,6 +59,10 @@ export default function Chat() {
 	return (
 		<>
 			<Appbar>
+				<Pressable>
+				<Ionicons name="arrow-back" size={20} color="black" />
+					<Text>Back to Chats</Text>
+				</Pressable>
 				<View>
 					{user != undefined && <Text>Welcome {user.displayName}</Text>}
 				</View>
