@@ -21,8 +21,14 @@ import { Appbar } from "react-native-paper";
 
 import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
+
 import { UserContext } from "../App.jsx";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+
+
+
 
 export default function Chat() {
 	// CONST DEFINITIONS
@@ -31,7 +37,7 @@ export default function Chat() {
 	const { user, setUser } = useContext(UserContext);
 
 	const [newChat, setNewChat] = useState({
-		chatId: useId(),
+		chatId: uuidv4(),  //This is a unique id
 		chatTitle: "",
 		date: dayjs,
 		userId: "",
@@ -75,7 +81,7 @@ export default function Chat() {
 				style={styles.myList}
 				renderItem={({ item }) => (
 					<>
-						<Pressable onPress={() => navigation.navigate('Chat', {chatId: {item}})}>
+						<Pressable onPress={() => navigation.navigate('Chat', {chatId: item.chatId})}>
 							<View style={styles.listItem}>
 								<View style={styles.row}>
 									<Text style={styles.listItemTitle}>{item.chatTitle}</Text>
