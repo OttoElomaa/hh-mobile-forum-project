@@ -14,6 +14,8 @@ import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
 import { UserContext } from '../App.jsx'; 
 
+import ChatListComp from "./ChatsListComp.jsx"
+
 
 
 export default function Chat() {
@@ -56,9 +58,9 @@ export default function Chat() {
 	}, []);
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<>
 			<Appbar>
-				<View style={[styles.spaceEvenly]}>
+				<View>
 					<Text style={styles.myHeader}>Message App</Text>{" "}
 					<View>{user != undefined && <Text>Welcome {user.displayName}</Text>}</View>
 				</View>
@@ -89,6 +91,7 @@ export default function Chat() {
 						...message,
 						mText: text,
 						title: "re: conversation",
+						userId: user.userId,
 						userName: user.displayName,
 						date: dayjs().toJSON(),
 					})
@@ -97,6 +100,7 @@ export default function Chat() {
 			/>
 
 			<MyGenericButton function={handleSave} text="Send" />
-		</SafeAreaView>
+
+		</>
 	);
 }

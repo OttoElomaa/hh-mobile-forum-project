@@ -9,6 +9,7 @@ export const updateUserProfile = (user, displayName) => {
 	// PUSH TO DATABASE
 	if (user && displayName != "") {
 		set(ref(database, "profiles/" + user.uid), {
+			userId: user.uid,
 			displayName: displayName,
 		});
 	} else {
