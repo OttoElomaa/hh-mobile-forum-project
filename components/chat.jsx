@@ -37,7 +37,7 @@ export default function Chat() {
 		if (message.title && message.mText) {
 			push(ref(database, "messages/"), message);
 		} else {
-			Alert.alert("Error", "Type product and amount first");
+			Alert.alert("Error", "Type message text first");
 		}
 	};
 

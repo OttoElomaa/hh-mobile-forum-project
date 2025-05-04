@@ -22,6 +22,8 @@ import { get, getDatabase, ref } from "firebase/database";
 import { Appbar } from "react-native-paper";
 import ProfileScreen from "./components/ProfileScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 export const UserContext = createContext({
 	user: null,
@@ -63,6 +65,22 @@ export default function App() {
 	};
 
 	const MyTabs = createBottomTabNavigator({
+		// Source: Reactnavigation. Customizing Bottom Tab Bar. 
+		// Linkki: https://reactnavigation.org/docs/customizing-tabbar?config=static 
+		screenOptions: ({ route }) => ({
+			tabBarIcon: ({ focused, color, size }) => {
+			  let iconName;
+		
+			  if (route.name === 'Chat') {
+				iconName = 'chatbubble';
+			  } else if (route.name === 'Profile') {
+				iconName = 'person';
+			  }
+			  // You can return any component that you like here!
+			  return <Ionicons name={iconName} size={size} color={color} />;
+			},
+		  }),
+
 		screens: {
 			Chat: {
 				screen: Chat,
@@ -86,7 +104,7 @@ export default function App() {
 
 			{/* LOGGED IN VIEW */}
 			<UserContext.Provider value={userContextValues}>
-				{user && <Navigation />}
+				{user && <Navigation style={{width:"100%"}} />}
 			</UserContext.Provider>
 
 			{/* LOGGED OUT VIEW */}
