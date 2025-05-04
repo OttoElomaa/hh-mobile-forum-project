@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: "90%",
 
-		margin:"auto",
+		margin: "auto",
 		marginBottom: 20,
 
 		alignItems: "center",
@@ -58,6 +58,11 @@ const styles = StyleSheet.create({
 		fontSize: 22,
 		fontWeight: "bold",
 	},
+	myList: {
+		paddingHorizontal: 20,
+		paddingVertical: 10,
+		backgroundColor: "#cfd2d4",
+	},
 	listItem: {
 		justifyContent: "center",
 		alignItems: "left",
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 
 		borderRadius: 25, // CORNERS PRETTIER
-		backgroundColor: "#f0f0f0",
+		backgroundColor: "white",
 	},
 
 	myPicker: {

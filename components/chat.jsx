@@ -59,20 +59,19 @@ export default function Chat() {
 		<>
 			<Appbar>
 				<View>
-					<Text style={styles.myHeader}>Message App</Text>{" "}
-					<View>
-						{user != undefined && <Text>Welcome {user.displayName}</Text>}
-					</View>
+					{user != undefined && <Text>Welcome {user.displayName}</Text>}
 				</View>
 			</Appbar>
 
 			{/*List showing each message in chat*/}
 			<FlatList
+				style={styles.myList}
 				renderItem={({ item }) => (
 					<>
 						<View style={styles.listItem}>
 							<Text style={{ fontSize: 18 }}>
-								{item.userName}{"      "}  {dayjs(item.date).format("DD.MM HH:mm")}
+								{item.userName}
+								{"      "} {dayjs(item.date).format("DD.MM HH:mm")}
 							</Text>
 							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
 						</View>
