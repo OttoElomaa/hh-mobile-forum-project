@@ -73,6 +73,12 @@ const styles = StyleSheet.create({
 		borderRadius: 25, // CORNERS PRETTIER
 		backgroundColor: "white",
 	},
+	listItemTitle: {
+		color: "orange",
+		fontSize: 21,
+		marginRight: 30,
+		marginBottom: 10,
+	},
 
 	myPicker: {
 		borderWidth: 1,

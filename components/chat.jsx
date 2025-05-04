@@ -1,5 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Alert, Button, FlatList, Pressable, Text, TextInput, View } from "react-native";
+import {
+	Alert,
+	Button,
+	FlatList,
+	Pressable,
+	Text,
+	TextInput,
+	View,
+} from "react-native";
 
 import dayjs from "dayjs";
 
@@ -37,6 +45,7 @@ export default function Chat() {
 	const handleSave = () => {
 		if (message.title && message.mText) {
 			push(ref(database, "messages/"), message);
+			setMessage("");
 		} else {
 			Alert.alert("Error", "Type message text first");
 		}
@@ -56,11 +65,22 @@ export default function Chat() {
 		});
 	}, []);
 
+	const onPressFunction = () => {};
+
 	return (
 		<>
+			{/*AppBar, top of screen*/}
 			<Appbar>
-				<Pressable>
-				<Ionicons name="arrow-back" size={20} color="black" />
+				{/*Button to go back to Chats list screen*/}
+				<Pressable
+					style={({ pressed }) => [
+						styles.button,
+						styles.margin1,
+						{ backgroundColor: pressed ? "darkred" : "orange" },
+					]}
+					onPress={onPressFunction}
+				>
+					<Ionicons name="arrow-back" size={20} color="black" />
 					<Text>Back to Chats</Text>
 				</Pressable>
 				<View>
@@ -74,10 +94,13 @@ export default function Chat() {
 				renderItem={({ item }) => (
 					<>
 						<View style={styles.listItem}>
-							<Text style={{ fontSize: 18 }}>
-								{item.userName}
-								{"      "} {dayjs(item.date).format("DD.MM HH:mm")}
-							</Text>
+							<View style={styles.row}>
+								<Text style={styles.listItemTitle}>{item.userName}</Text>
+								<Text style={{ fontSize: 15 }}>
+									{dayjs(item.date).format("DD.MM HH:mm")}
+								</Text>
+							</View>
+
 							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
 						</View>
 						<View style={{ height: 10 }} />

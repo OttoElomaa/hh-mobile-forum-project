@@ -65,11 +65,13 @@ export default function Chat() {
 				renderItem={({ item }) => (
 					<>
 						<View style={styles.listItem}>
-							<Text style={{ fontSize: 18 }}>
-								{item.userName}
-								{"      "} {dayjs(item.date).format("DD.MM HH:mm")}
-							</Text>
-							<Text style={{ fontSize: 18 }}>{item.chatTitle}</Text>
+							<View style={styles.row}>
+								<Text style={styles.listItemTitle}>{item.chatTitle}</Text>
+								<Text style={{ fontSize: 15 }}>
+									{dayjs(item.date).format("DD.MM HH:mm")}
+								</Text>
+							</View>
+							<Text style={{ fontSize: 18 }}>Started by {item.userName}</Text>
 						</View>
 						<View style={{ height: 10 }} />
 					</>
