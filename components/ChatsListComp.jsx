@@ -18,7 +18,7 @@ export default function Chat() {
 	// CONST DEFINITIONS
 	const database = getDatabase(app);
 	const navigation = useNavigation();
-	const {user, setUser} = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
 
 	const [newChat, setNewChat] = useState({
 		chatTitle: "",
@@ -26,6 +26,7 @@ export default function Chat() {
 		userId: "",
 		userName: "",
 	});
+	const [chats, setChats] = useState([]);
 
 	//SAVE -> PUSH MESSAGE TO FIREBASE
 	const handleSave = () => {
@@ -36,9 +37,40 @@ export default function Chat() {
 		}
 	};
 
+	// THIS READS MESSAGES FROM DATABASE?
+	// Execute onValue inside the useEffect
+	useEffect(() => {
+		const itemsRef = ref(database, "chats/");
+		onValue(itemsRef, (snapshot) => {
+			const data = snapshot.val();
+			if (data) {
+				setChats(Object.values(data));
+			} else {
+				setChats([]); // Handle the case when there are no items
+			}
+		});
+	}, []);
+
 	return (
 		<>
-			<Text style={styles.myHeader}>New component</Text>
+			<Text style={styles.myHeader}>List of Chats</Text>
+
+			{/*List showing each message in chat*/}
+			<FlatList
+				renderItem={({ item }) => (
+					<>
+						<View style={styles.listItem}>
+							<Text style={{ fontSize: 18 }}>
+								
+								{item.userName}{"      "} {dayjs(item.date).format("DD.MM HH:mm")}
+							</Text>
+							<Text style={{ fontSize: 18 }}>{item.chatTitle}</Text>
+						</View>
+						<View style={{ height: 10 }} />
+					</>
+				)}
+				data={chats}
+			/>
 
 			<TextInput
 				placeholder="Chat Name"

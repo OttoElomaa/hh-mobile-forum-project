@@ -12,11 +12,9 @@ import { Appbar } from "react-native-paper";
 
 import styles from "../styles/Styles";
 import MyGenericButton from "./MyGenericButton";
-import { UserContext } from '../App.jsx'; 
+import { UserContext } from "../App.jsx";
 
-import ChatListComp from "./ChatsListComp.jsx"
-
-
+import ChatListComp from "./ChatsListComp.jsx";
 
 export default function Chat() {
 	// CONST DEFINITIONS
@@ -24,7 +22,7 @@ export default function Chat() {
 	const navigation = useNavigation();
 
 	const [messages, setMessages] = useState([]);
-	const {user, setUser} = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
 
 	const [message, setMessage] = useState({
 		mText: "",
@@ -62,17 +60,19 @@ export default function Chat() {
 			<Appbar>
 				<View>
 					<Text style={styles.myHeader}>Message App</Text>{" "}
-					<View>{user != undefined && <Text>Welcome {user.displayName}</Text>}</View>
+					<View>
+						{user != undefined && <Text>Welcome {user.displayName}</Text>}
+					</View>
 				</View>
 			</Appbar>
+
 			{/*List showing each message in chat*/}
 			<FlatList
 				renderItem={({ item }) => (
 					<>
 						<View style={styles.listItem}>
 							<Text style={{ fontSize: 18 }}>
-								{" "}
-								{item.userName} {dayjs(item.date).format("DD.MM HH:mm")}
+								{item.userName}{"      "}  {dayjs(item.date).format("DD.MM HH:mm")}
 							</Text>
 							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
 						</View>
@@ -100,7 +100,6 @@ export default function Chat() {
 			/>
 
 			<MyGenericButton function={handleSave} text="Send" />
-
 		</>
 	);
 }

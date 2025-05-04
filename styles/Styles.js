@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 	},
 	listItem: {
 		justifyContent: "center",
-		alignItems: "center",
+		alignItems: "left",
 
 		paddingVertical: 10,
 		paddingHorizontal: 20,
