@@ -25,12 +25,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 import ChatListComp from "./ChatsListComp.jsx";
 
-export default function Chat( { route } ) {
+export default function Chat({ route }) {
 	// CONST DEFINITIONS
 	const database = getDatabase(app);
 	const navigation = useNavigation();
 
-	const chatId = route.params;
+	const [chatId, setChatId] = useState("");
+	//const {chatId} = route.params;
 
 	const [messages, setMessages] = useState([]);
 	const { user, setUser } = useContext(UserContext);
@@ -46,7 +47,7 @@ export default function Chat( { route } ) {
 	//SAVE -> PUSH MESSAGE TO FIREBASE
 	const handleSave = () => {
 		if (message.title && message.mText) {
-			push(ref(database, "messages/"), message);
+			push(ref(database, "messages/" +  chatId ), message);
 			setMessage("");
 		} else {
 			Alert.alert("Error", "Type message text first");
@@ -54,20 +55,47 @@ export default function Chat( { route } ) {
 	};
 
 	// THIS READS MESSAGES FROM DATABASE?
-	// Execute onValue inside the useEffect
+	// This was re-organized heavily by Claude.ai
 	useEffect(() => {
-		const itemsRef = ref(database, "messages/");
-		onValue(itemsRef, (snapshot) => {
-			const data = snapshot.val();
-			if (data) {
-				setMessages(Object.values(data));
-			} else {
-				setMessages([]); // Handle the case when there are no items
-			}
+		// Set up the focus listener
+		const unsubscribe = navigation.addListener("focus", () => {
+		  if (!route?.params?.chatId) {
+			setMessages([]);
+			return;
+		  }
+		  
+		  // Save the chatId to state for use elsewhere
+		  setChatId(route.params.chatId);
 		});
-	}, []);
+		
+		// Clean up the navigation listener
+		return unsubscribe;
+	  }, [navigation, route]);
+	  
+	  // Separate useEffect for database listening
+	  useEffect(() => {
+		// If no chatId, don't set up a listener
+		if (!chatId) return;
+		
+		console.log("Setting up listener for chatId:", chatId);
+		
+		// Set up database listener
+		const itemsRef = ref(database, "messages/" + chatId);
+		const messagesListener = onValue(itemsRef, (snapshot) => {
+		  const data = snapshot.val();
+		  if (data) {
+			setMessages(Object.values(data));
+		  } else {
+			setMessages([]);
+		  }
+		});
+		
+		// Clean up the database listener when component unmounts or chatId changes
+		return () => messagesListener();
+	  }, [chatId]);
+	  // End of Edits by Claude.ai
 
-	const onPressFunction = () => {};
+
 
 	return (
 		<>
@@ -80,7 +108,7 @@ export default function Chat( { route } ) {
 						styles.margin1,
 						{ backgroundColor: pressed ? "darkred" : "orange" },
 					]}
-					onPress={() => navigation.navigate('ChatList')}
+					onPress={() => navigation.navigate("ChatList")}
 				>
 					<Ionicons name="arrow-back" size={20} color="black" />
 					<Text>Back to Chats</Text>
@@ -90,55 +118,51 @@ export default function Chat( { route } ) {
 				</View>
 			</Appbar>
 
-
-{/*Start of conditional: Is there a chatId provided?*/}
+			{/*Start of conditional: Is there a chatId provided?*/}
 			{chatId && (
 				<>
-					
+					{/*List showing each message in chat*/}
+					<FlatList
+						style={styles.myList}
+						renderItem={({ item }) => (
+							<>
+								<View style={styles.listItem}>
+									<View style={styles.row}>
+										<Text style={styles.listItemTitle}>{item.userName}</Text>
+										<Text style={{ fontSize: 15 }}>
+											{dayjs(item.date).format("DD.MM HH:mm")}
+										</Text>
+									</View>
 
-			{/*List showing each message in chat*/}
-			<FlatList
-				style={styles.myList}
-				renderItem={({ item }) => (
-					<>
-						<View style={styles.listItem}>
-							<View style={styles.row}>
-								<Text style={styles.listItemTitle}>{item.userName}</Text>
-								<Text style={{ fontSize: 15 }}>
-									{dayjs(item.date).format("DD.MM HH:mm")}
-								</Text>
-							</View>
+									<Text style={{ fontSize: 18 }}>{item.mText}</Text>
+								</View>
+								<View style={{ height: 10 }} />
+							</>
+						)}
+						data={messages}
+					/>
 
-							<Text style={{ fontSize: 18 }}>{item.mText}</Text>
-						</View>
-						<View style={{ height: 10 }} />
-					</>
-					
-				)}
-				data={messages}
-			/>
+					{/*Here user types message*/}
 
-			{/*Here user types message*/}
+					<TextInput
+						placeholder="Message Text"
+						onChangeText={(text) =>
+							setMessage({
+								...message,
+								mText: text,
+								title: "re: conversation",
+								userId: user.userId,
+								userName: user.displayName,
+								date: dayjs().toJSON(),
+							})
+						}
+						value={message.mText}
+					/>
 
-			<TextInput
-				placeholder="Message Text"
-				onChangeText={(text) =>
-					setMessage({
-						...message,
-						mText: text,
-						title: "re: conversation",
-						userId: user.userId,
-						userName: user.displayName,
-						date: dayjs().toJSON(),
-					})
-				}
-				value={message.mText}
-			/>
-
-			<MyGenericButton function={handleSave} text="Send" />
-			</>
-		)}
-		{/*End of conditional*/}
+					<MyGenericButton function={handleSave} text="Send" />
+				</>
+			)}
+			{/*End of conditional*/}
 		</>
 	);
 }
