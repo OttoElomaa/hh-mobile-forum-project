@@ -48,7 +48,11 @@ export default function Chat() {
 	//SAVE -> PUSH MESSAGE TO FIREBASE
 	const handleSave = () => {
 		if (newChat.chatTitle) {
-			push(ref(database, "chats/"), newChat);
+			const chatToSave = {
+				...newChat,
+				chatId: uuidv4()
+			};
+			push(ref(database, "chats/"), chatToSave);
 		} else {
 			Alert.alert("Error", "Type chat title first");
 		}

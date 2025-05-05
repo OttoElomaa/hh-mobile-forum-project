@@ -64,7 +64,7 @@ export default function SignupEmailComp(props) {
 					setModalVisible(!modalVisible);
 				}}
 			>
-				<View style={styles.container}>
+				<View style={styles.spaceEvenly}>
 					<Text>Give info to create account</Text>
 
 					<TextInput
@@ -86,6 +86,7 @@ export default function SignupEmailComp(props) {
 
 					<MyGenericButton function={hideModal} text="Send Signup Request" />
 				</View>
+				<View style={styles.spaceEvenly} />
 			</Modal>
 
 			<MyGenericButton function={showModal} text="Sign up" />
